@@ -149,6 +149,20 @@ class Resource(models.SurveyResource):
         return self._disassoc('notification_templates_%s' % status,
                               job_template, notification_template)
 
+    @resources.command(use_fields_as_options=False)
+    @click.option('--job-template', type=types.Related('job_template'))
+    @click.option('--credential', type=types.Related('credential'))
+    def associate_credential(self, job_template, credential):
+        """Associate a credential with this job template."""
+        return self._assoc('extra_credentials', job_template, credential)
+
+    @resources.command(use_fields_as_options=False)
+    @click.option('--job-template', type=types.Related('job_template'))
+    @click.option('--credential', type=types.Related('credential'))
+    def disassociate_credential(self, job_template, credential):
+        """Disassociate a credential with this job template."""
+        return self._disassoc('extra_credentials', job_template, credential)
+
     @resources.command(use_fields_as_options=('extra_vars'))
     @click.option('--host-config-key', help='Job-template-specific string used to authenticate '
                   'host during provisioning callback.')
